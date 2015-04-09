@@ -610,11 +610,12 @@ class ArchivedHttpRequest(object):
     # TODO(tonyg): Strip sdch from the request headers because we can't
     # guarantee that the dictionary will be recorded, so replay may not work.
     if 'accept-encoding' in headers:
-      headers['accept-encoding'] = headers['accept-encoding'].replace(
-          'sdch', '')
-      # A little clean-up
-      if headers['accept-encoding'].endswith(','):
-        headers['accept-encoding'] = headers['accept-encoding'][:-1]
+      accept_encoding = headers['accept-encoding']
+      accept_encoding = accept_encoding.replace('sdch', '')
+      accept_encoding = accept_encoding.replace(' ', '')
+      if accept_encoding.endswith(','):
+        accept_encoding = accept_encoding[:-1]
+      headers['accept-encoding'] = accept_encoding
     undesirable_keys = [
         'accept', 'accept-charset', 'accept-language', 'cache-control',
         'connection', 'cookie', 'keep-alive', 'method',
