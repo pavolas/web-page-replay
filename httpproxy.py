@@ -36,13 +36,8 @@ def _HandleSSLCertificateError():
   BaseHTTPServer.HTTPServer.handle_error().
   """
   exc_type, exc_value, exc_traceback = sys.exc_info()
-  exceptions_to_ignore = [
-      'tlsv1 alert unknown ca',
-      'sslv3 alert certificate unknown',
-  ]
-  for exception_to_ignore in exceptions_to_ignore:
-    if exception_to_ignore in str(exc_value):
-      return
+  if isinstance(exc_value, ssl.SSLError):
+    return
 
   raise
 
